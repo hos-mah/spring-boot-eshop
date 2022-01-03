@@ -11,7 +11,7 @@ SET SCHEMA 'full_stack_shop';
 -- *** shop-app.product_category
 -- *** ------------------------------------
 
-CREATE SEQUENCE full_stack_shop.product_category_seq;
+CREATE SEQUENCE IF NOT EXISTS full_stack_shop.product_category_seq;
 
 CREATE TABLE IF NOT EXISTS full_stack_shop.product_category
 (

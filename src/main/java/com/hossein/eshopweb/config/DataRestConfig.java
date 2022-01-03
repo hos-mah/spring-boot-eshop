@@ -1,7 +1,9 @@
 package com.hossein.eshopweb.config;
 
+import com.hossein.eshopweb.entity.Country;
 import com.hossein.eshopweb.entity.Product;
 import com.hossein.eshopweb.entity.ProductCategory;
+import com.hossein.eshopweb.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -29,18 +31,20 @@ public class DataRestConfig implements RepositoryRestConfigurer {
         RepositoryRestConfigurer.super.configureRepositoryRestConfiguration(config, cors);
         HttpMethod[] unSupportActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
 
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)))
-                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)))
-                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)));
+        disableHttpMethods(Product.class, config, unSupportActions);
+        disableHttpMethods(ProductCategory.class, config, unSupportActions);
+        disableHttpMethods(Country.class, config, unSupportActions);
+        disableHttpMethods(State.class, config, unSupportActions);
 
         //expose id of entities
         exposeIds(config);
+    }
+
+    private void disableHttpMethods(Class theEntityClass, RepositoryRestConfiguration config, HttpMethod[] unSupportActions) {
+        config.getExposureConfiguration()
+                .forDomainType(theEntityClass)
+                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)))
+                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportActions)));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
