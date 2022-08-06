@@ -28,7 +28,7 @@ public class Address {
     private String country;
 
     @Column(name = "zip_code")
-    private String zipCode;
+    private String zipCode ;
 
     @OneToOne
     @PrimaryKeyJoinColumn

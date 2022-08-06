@@ -5,6 +5,7 @@ import com.hossein.eshopweb.entity.Product;
 import com.hossein.eshopweb.entity.ProductCategory;
 import com.hossein.eshopweb.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -21,6 +22,9 @@ import java.util.Set;
 public class DataRestConfig implements RepositoryRestConfigurer {
     private EntityManager entityManager;
 
+    @Value("${allowed.origins}")
+    private String[] theAllowedOrigins;
+
     @Autowired
     public DataRestConfig(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -28,9 +32,8 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        RepositoryRestConfigurer.super.configureRepositoryRestConfiguration(config, cors);
-        HttpMethod[] unSupportActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
 
+        HttpMethod[] unSupportActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH};
         disableHttpMethods(Product.class, config, unSupportActions);
         disableHttpMethods(ProductCategory.class, config, unSupportActions);
         disableHttpMethods(Country.class, config, unSupportActions);
@@ -38,6 +41,9 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         //expose id of entities
         exposeIds(config);
+
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
+
     }
 
     private void disableHttpMethods(Class theEntityClass, RepositoryRestConfiguration config, HttpMethod[] unSupportActions) {

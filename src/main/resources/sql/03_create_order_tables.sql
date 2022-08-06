@@ -38,6 +38,7 @@ CREATE TABLE customer
     email      varchar(255)    DEFAULT NULL,
     PRIMARY KEY (id)
 );
+alter table customer add unique (email);
 ALTER SEQUENCE customer_seq RESTART WITH 1;
 --
 -- Table structure for table `orders`
