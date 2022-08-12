@@ -1,9 +1,6 @@
 package com.hossein.eshopweb.config;
 
-import com.hossein.eshopweb.entity.Country;
-import com.hossein.eshopweb.entity.Product;
-import com.hossein.eshopweb.entity.ProductCategory;
-import com.hossein.eshopweb.entity.State;
+import com.hossein.eshopweb.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +35,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
         disableHttpMethods(ProductCategory.class, config, unSupportActions);
         disableHttpMethods(Country.class, config, unSupportActions);
         disableHttpMethods(State.class, config, unSupportActions);
+        disableHttpMethods(Order.class, config, unSupportActions);
 
         //expose id of entities
         exposeIds(config);
