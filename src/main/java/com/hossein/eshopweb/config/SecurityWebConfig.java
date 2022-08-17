@@ -30,6 +30,12 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
 //                .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 //                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
         http.cors();
+
+        /* csrf perform checks on POST using cookies and by default is enabled
+           if we don't use cookies for session tracking, csrf says it is unauthorized
+         */
+        http.csrf().disable();
+
         Okta.configureResourceServer401ResponseBody(http);
     }
 //    @Autowired
