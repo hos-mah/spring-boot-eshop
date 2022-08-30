@@ -24,17 +24,20 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/orders/**").authenticated()
+//                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/*").permitAll()
                 .and().oauth2ResourceServer()
                 .jwt();
 //                .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 //                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
-        http.cors();
+//        http.cors();
 
         /* csrf perform checks on POST using cookies and by default is enabled
            if we don't use cookies for session tracking, csrf says it is unauthorized
          */
-        http.csrf().disable();
+        http.cors().and().csrf().disable();
 
         Okta.configureResourceServer401ResponseBody(http);
     }
