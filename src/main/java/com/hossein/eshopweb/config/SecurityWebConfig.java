@@ -5,6 +5,8 @@ import com.okta.spring.boot.oauth.Okta;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 //import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,15 +26,12 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/orders/**").authenticated()
-//                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
-//                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/*").permitAll()
+//                .antMatchers("/manage/**").hasRole("ACTUATOR")
+//                .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+//                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+//                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
                 .and().oauth2ResourceServer()
                 .jwt();
-//                .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
-//                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
-//        http.cors();
 
         /* csrf perform checks on POST using cookies and by default is enabled
            if we don't use cookies for session tracking, csrf says it is unauthorized
